@@ -7,6 +7,7 @@ edition = "2021"
 
 [dependencies]
 axum = "0.6.2"
+axum-macros = "0.3.1" 
 hyper = { version = "0.14.23", features = ["full"] }
 tokio = { version = "1.24.1", features = ["full"] }
 tower = "0.4.13"
@@ -17,3 +18,5 @@ tracing = "0.1.37"
 tracing-subscriber = {version="0.3.16", features=["env-filter"]}
 anyhow = "1.0.68"
 thiserror = "1.0.38"
+http-body = "0.4.5"
+validator = { version="0.16.0", features=["derive"]}
