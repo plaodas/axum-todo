@@ -1,13 +1,11 @@
-use anyhow::Ok;
 use axum::{
     async_trait,
-    extract::{Extension, FromRequest, Path, FromRequestParts},
+    extract::{Extension, FromRequest, Path, RequestParts},
     http::StatusCode,
     response::IntoResponse,
     BoxError, Json, 
 };
 use serde::de::DeserializeOwned;
-use tracing_subscriber::fmt::format;
 use std::sync::Arc;
 use validator::Validate;
 
@@ -36,7 +34,7 @@ where
         value.validate().map_err(|rejection|{
             let message = format!("Validation error: [{}]", rejection).replace('\n', ", ");
             (StatusCode::BAD_REQUEST, message)
-        });
+        })?;
 
         Ok(ValidatedJson(value))
     }
@@ -60,10 +58,10 @@ pub async fn create_todo<T: TodoRepository>(
 pub async fn find_todo<T: TodoRepository>(
     Path(id): Path<i32>,
     Extension(repository): Extension<Arc<T>>,
-) -> Result<impl IntoResponse, StatusCode >{
+) -> Result<impl IntoResponse, StatusCode>{
 
     let todo = repository.find(id).ok_or(StatusCode::NOT_FOUND)?;
-    Ok( (StatusCode::OK, Json(todo)) )
+    Ok((StatusCode::OK, Json(todo)))
 }
 
 pub async fn all_todo<T: TodoRepository>(

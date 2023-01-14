@@ -119,7 +119,6 @@ impl TodoRepository for TodoRepositoryForMemory {
             text,
             completed,
         };
-
         store.insert(id, todo.clone());
         Ok(todo)
     }

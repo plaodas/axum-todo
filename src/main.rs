@@ -215,11 +215,7 @@ mod test {
         let req = build_todo_req_with_json(
             "/todos/1", 
             Method::PATCH, 
-            r#"{
-                "id": 1,
-                "text": "should_update_todo",
-                "completed": false,
-            "}"#.to_string(),
+            r#"{"text": "should_update_todo","completed": false}"#.to_string(),
         );
         let res = create_app(repository).oneshot(req).await.unwrap();
         let todo = res_to_todo(res).await;
