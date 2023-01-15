@@ -22,6 +22,7 @@ http-body = "0.4.3"
 validator = { version = "0.16.0", features = ["derive"] }
 sqlx = { version = "0.6.2", features = ["runtime-tokio-rustls", "any", "postgres"] }
 dotenv = "0.15.0"
+tower-http = { version="0.3.5", features=["cors"]}
 
 [features]
 default = ["database-test"]

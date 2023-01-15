@@ -1,6 +1,7 @@
 mod handlers;
 mod repositories;
 
+use hyper::header::CONTENT_TYPE;
 use crate::repositories::{
     TodoRepository,
     // TodoRepositoryForMemory
@@ -19,6 +20,7 @@ use std::{
 };
 use sqlx::PgPool;
 use dotenv::dotenv;
+use tower_http::cors::{Any, CorsLayer, AllowOrigin};
 
 #[tokio::main]
 async fn main() {
@@ -65,6 +67,12 @@ fn create_app<T: TodoRepository>(repository:T) -> Router {
             .patch(update_todo::<T>),
     )
     .layer(Extension(Arc::new(repository)))
+    .layer(
+        CorsLayer::new()
+            .allow_origin(AllowOrigin::exact("http://localhost:3001".parse().unwrap()))
+            .allow_methods(Any)
+            .allow_headers(vec![CONTENT_TYPE])
+    )
 }
 
 
